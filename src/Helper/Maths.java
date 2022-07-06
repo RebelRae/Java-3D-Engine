@@ -6,10 +6,13 @@
  * ========================================================================== */
 package src.Helper;
 
-import src.Primative.Vector2;
-import src.Primative.Vector3;
+import src.Primitive.Vector2;
+import src.Primitive.Vector3;
 
 public class Maths {
+    public static float[] rangeNorm = {-1.0f, 1.0f};
+    public static float[] rangeFloor = {0.0f, 1.0f};
+    public static float[] range255 = {0.0f, 255.0f};
     public static int Lerp(int a, int b, float t) {
         float fA = (float) a;
         float fB = (float) b;

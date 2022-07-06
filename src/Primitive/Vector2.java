@@ -4,7 +4,7 @@
  | = AUTHOR : Rebel Rae Brown =============================================== |
  | = DATE : July 05, 2022 =================================================== |
  * ========================================================================== */
-package src.Primative;
+package src.Primitive;
 
 public class Vector2 {
     public float x;

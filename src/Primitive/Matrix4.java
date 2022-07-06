@@ -4,7 +4,7 @@
  | = AUTHOR : Rebel Rae Brown =============================================== |
  | = DATE : July 05, 2022 =================================================== |
  * ========================================================================== */
-package src.Primative;
+package src.Primitive;
 
 public class Matrix4 {
     public float[][] matrix = new float[4][4];
@@ -25,5 +25,32 @@ public class Matrix4 {
             output.z /= w;
         }
         return output;
+    }
+    public static Matrix4 RotateMatrixX(float x) {
+        Matrix4 xRotationMatrix = new Matrix4();
+        xRotationMatrix.matrix[0][0] = 1.0f;
+        xRotationMatrix.matrix[1][1] = (float) Math.cos(x);
+        xRotationMatrix.matrix[1][2] = (float) Math.sin(x);
+        xRotationMatrix.matrix[2][1] = (float) -Math.sin(x);
+        xRotationMatrix.matrix[2][2] = (float) Math.cos(x);
+        return xRotationMatrix;
+    }
+    public static Matrix4 RotateMatrixY(float y) {
+        Matrix4 yRotationMatrix = new Matrix4();
+        yRotationMatrix.matrix[0][0] = (float) Math.cos(y);
+        yRotationMatrix.matrix[1][1] = 1.0f;
+        yRotationMatrix.matrix[0][2] = (float) -Math.sin(y);
+        yRotationMatrix.matrix[2][0] = (float) Math.sin(y);
+        yRotationMatrix.matrix[2][2] = (float) Math.cos(y);
+        return yRotationMatrix;
+    }
+    public static Matrix4 RotateMatrixZ(float z) {
+        Matrix4 zRotationMatrix = new Matrix4();
+        zRotationMatrix.matrix[0][0] = (float) Math.cos(z);
+        zRotationMatrix.matrix[0][1] = (float) Math.sin(z);
+        zRotationMatrix.matrix[1][0] = (float) -Math.sin(z);
+        zRotationMatrix.matrix[1][1] = (float) Math.cos(z);
+        zRotationMatrix.matrix[2][2] = 1.0f;
+        return zRotationMatrix;
     }
 }

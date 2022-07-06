@@ -4,11 +4,12 @@
  | = AUTHOR : Rebel Rae Brown =============================================== |
  | = DATE : July 05, 2022 =================================================== |
  * ========================================================================== */
-package src.Primative;
+package src.Primitive;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.awt.Color;
 
 import src.Debug;
 import src.Engine;
@@ -18,12 +19,15 @@ import java.util.ArrayList;
 public class Mesh {
     public ArrayList<Triangle> triangles;
     public float yRotSpeed, xRotSpeed, zRotSpeed;
+    private Color color = Color.GRAY;
+
     public Mesh() {
         this.triangles = new ArrayList<Triangle>();
     }
     public Mesh(ArrayList<Triangle> triangles) {
         this.triangles = triangles;
     }
+
     public static Mesh FromFile(String filename) {
         try {
             File file = new File(filename);
@@ -60,4 +64,7 @@ public class Mesh {
         }
         return null;
     }
+
+    public Color getColor() { return color; }
+    public void setColor(Color color) { this.color = color; }
 }
