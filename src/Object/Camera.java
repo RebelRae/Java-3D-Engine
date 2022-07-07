@@ -12,7 +12,7 @@ public class Camera extends SceneObject {
     private Matrix4 projectionMatrix;
 
     public Camera() {
-        this.fov = 90.0f;
+        this.fov = 60.0f;
         this.nearPlane = 0.1f;
         this.farPlane = 1000.0f;
         this.tangent = 1.0f / (float) Math.tan((Double) (this.fov * 0.5f / 180.0f * Math.PI));

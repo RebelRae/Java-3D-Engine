@@ -143,12 +143,13 @@ public class Engine extends Canvas implements Runnable {
 
         SceneObject meshObject = new SceneObject();
         meshObject.Mesh(mesh);
-        meshObject.setPosition(new Vector3(0.0f, 0.0f, 15.0f));
+        meshObject.setPosition(new Vector3(0.0f, 3.0f, 35.0f));
         scene.AddObject(meshObject);
         Cube cube = new Cube();
         cube.Mesh().xRotSpeed = 0.4f;
         cube.Mesh().zRotSpeed = -0.7f;
-        cube.setPosition(new Vector3(0.0f, -2.1045f, 4.0f));
+        cube.setPosition(new Vector3(2.0f, -0.1045f, 4.0f));
+        cube.Mesh().setColor(Color.CYAN);
         scene.AddObject(cube);
 
         String fName = "./../res/fonts/MarkerFelt.ttc";

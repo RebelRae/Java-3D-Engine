@@ -33,8 +33,8 @@ public class Scene {
         this.sceneLight = new Light();
         this.sceneLight.setRotation(new Vector3(0.0f, 0.0f, -1.0f));
         grid = new LineObject();
-        grid.setPosition(new Vector3(0.0f, 1.0f, 10.0f));
-        grid.setRotation(new Vector3(0.2f, 1.0f, 0.4f));
+        grid.setPosition(new Vector3(0.0f, 1.0f, 20.0f));
+        grid.setRotation(new Vector3(0.0f, 1.0f, 0.0f));
         for (float x = -10; x < 11; x++) {
             Line line = new Line(
                 new Vector3(x + 0.0f, 0.0f, 10.0f),
@@ -51,6 +51,12 @@ public class Scene {
             line.color = z == 0? Color.RED : Color.GRAY;
             grid.lines.add(line);
         }
+        Line line = new Line(
+            new Vector3(0.0f, 10.0f, 0.0f),
+            new Vector3(0.0f, -10.0f, 0.0f)
+        );
+        line.color = Color.BLUE;
+        grid.lines.add(line);
         sceneObjects.add(grid);
     }
 
@@ -62,13 +68,14 @@ public class Scene {
             if(object.getClass().equals(LineObject.class)) {
                 LineObject o = (LineObject) object;
                 // Rotate X
-                Matrix4 xRotationMatrix = Matrix4.RotateMatrixX((float)DELTA_UPDATE * o.getRotation().x);
+                Matrix4 xRotationMatrix = Matrix4.RotateMatrixX(o.getRotation().x);
                 // Rotate Y
-                Matrix4 yRotationMatrix = Matrix4.RotateMatrixY((float)DELTA_UPDATE * o.getRotation().y);
+                Matrix4 yRotationMatrix = Matrix4.RotateMatrixY(o.getRotation().y);
                 // Rotate Z
-                Matrix4 zRotationMatrix = Matrix4.RotateMatrixZ((float)DELTA_UPDATE * o.getRotation().z);
+                Matrix4 zRotationMatrix = Matrix4.RotateMatrixZ(o.getRotation().z);
                 for (int i = 0; i < o.lines.size(); i++) {
-                    Line line = o.lines.get(i);
+                    Line line = new Line(o.lines.get(i).head, o.lines.get(i).tail);
+                    line.color = o.lines.get(i).color;
                     // Rotate X
                     line.head = xRotationMatrix.MultiplyMatrixVector(line.head);
                     line.tail = xRotationMatrix.MultiplyMatrixVector(line.tail);
