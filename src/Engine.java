@@ -6,16 +6,16 @@
  * ========================================================================== */
 package src;
 
+import java.util.Properties;
+
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferStrategy;
 import java.awt.image.DataBufferInt;
-import java.io.IOException;
-import java.io.InputStream;
 
 import javax.swing.JFrame;
 
@@ -47,11 +47,17 @@ public class Engine extends Canvas implements Runnable {
     public static String OBJ_STRING = "No file loaded";
 
     private static Scene scene = new Scene();
+    private InputHandler inputHandler;
     
     public Engine() {
         Debug.output = false;
         BG_IMAGE = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         BACKGROUND = ((DataBufferInt)BG_IMAGE.getRaster().getDataBuffer()).getData();
+        inputHandler = new InputHandler();
+        addKeyListener(inputHandler);
+        addFocusListener(inputHandler);
+        addMouseListener(inputHandler);
+        addMouseMotionListener(inputHandler);
     }
 
     private void start() {
@@ -96,7 +102,11 @@ public class Engine extends Canvas implements Runnable {
         }
     }
     // -------------------------- Update Input -------------------------- //
-    public void input() {}
+    public void input() {
+        if(inputHandler.key[KeyEvent.VK_CONTROL]) {
+            if(inputHandler.key[KeyEvent.VK_N]) MenuBar.NewFile();
+        }
+    }
     // -------------------------- Update Logic -------------------------- //
     public void tick() {}
     // ---------------------------- Graphics ---------------------------- //
@@ -135,16 +145,9 @@ public class Engine extends Canvas implements Runnable {
     }
 
     public static void main(String[] args) {
+        Properties props = System.getProperties();
+        props.setProperty("apple.awt.application.appearance", "system");
         // Preload
-        Mesh mesh = Mesh.FromFile("./res/objects/Pen_bushing.obj");
-        mesh.xRotSpeed = 0.5f;
-        mesh.yRotSpeed = 0.0f;
-        mesh.zRotSpeed = 1.0f;
-
-        SceneObject meshObject = new SceneObject();
-        meshObject.Mesh(mesh);
-        meshObject.setPosition(new Vector3(0.0f, 3.0f, 35.0f));
-        scene.AddObject(meshObject);
         Cube cube = new Cube();
         cube.Mesh().xRotSpeed = 0.4f;
         cube.Mesh().zRotSpeed = -0.7f;
@@ -152,34 +155,39 @@ public class Engine extends Canvas implements Runnable {
         cube.Mesh().setColor(Color.CYAN);
         scene.AddObject(cube);
 
-        String fName = "./../res/fonts/MarkerFelt.ttc";
-        InputStream is = Engine.class.getResourceAsStream(fName);
-        try {
-            font = Font.createFont(Font.TRUETYPE_FONT, is);
-        } catch (FontFormatException e) {
-            Debug.error(e.toString(), true);
-            e.printStackTrace();
-        } catch (IOException e) {
-            Debug.error(e.toString(), true);
-            e.printStackTrace();
-        }
         // Init
         Debug.success(String.format("Launching %s Version: %d.%d.%d", TITLE, v_MAJOR, v_MINOR, v_PATCH), true);
         Debug.success("Width: " + WIDTH + " Height: " + HEIGHT, true);
-        // BufferedImage cursor = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-        // Cursor blank = Toolkit.getDefaultToolkit().createCustomCursor(cursor, new Point(0, 0), "blank");
-        Engine display = new Engine();
         JFrame frame = new JFrame();
-        frame.add(display);
+        Engine engine = new Engine();
+        MenuBar menuBar = new MenuBar();
+
+        frame.add(engine);
+        frame.setJMenuBar(menuBar);
         frame.setTitle(String.format("%s - %d.%d.%d", TITLE, v_MAJOR, v_MINOR, v_PATCH));
         frame.pack();
+
+        // BufferedImage cursor = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+        // Cursor blank = Toolkit.getDefaultToolkit().createCustomCursor(cursor, new Point(0, 0), "blank");
         // frame.getContentPane().setCursor(blank);
+
         frame.setResizable(true);
         frame.setSize(WIDTH, HEIGHT);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
 
-        display.start();
+        engine.start();
+    }
+
+    public static void LoadFile(String filePath) {
+        Mesh mesh = Mesh.FromFile(filePath);
+        mesh.xRotSpeed = 0.25f;
+        mesh.yRotSpeed = 0.0f;
+        mesh.zRotSpeed = 0.5f;
+        SceneObject meshObject = new SceneObject();
+        meshObject.Mesh(mesh);
+        meshObject.setPosition(new Vector3(0.0f, 3.0f, 35.0f));
+        scene.AddObject(meshObject);
     }
 }

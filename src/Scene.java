@@ -70,7 +70,7 @@ public class Scene {
                 // Rotate X
                 Matrix4 xRotationMatrix = Matrix4.RotateMatrixX(o.getRotation().x);
                 // Rotate Y
-                Matrix4 yRotationMatrix = Matrix4.RotateMatrixY(o.getRotation().y);
+                Matrix4 yRotationMatrix = Matrix4.RotateMatrixY((float) DELTA_UPDATE * o.getRotation().y);
                 // Rotate Z
                 Matrix4 zRotationMatrix = Matrix4.RotateMatrixZ(o.getRotation().z);
                 for (int i = 0; i < o.lines.size(); i++) {
